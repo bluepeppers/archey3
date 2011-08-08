@@ -83,7 +83,7 @@ CLASS_MAPPINGS = {
 
 DE_DICT = {'gnome-session': 'GNOME',
     'ksmserver': 'KDE',
-    'xfce4-session': 'Xfce 4.6',
+    'xfce4-session': 'Xfce 4.8',
     'lxsession': 'LXDE',
     '': 'None',
 }
