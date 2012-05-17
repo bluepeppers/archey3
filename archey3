@@ -81,7 +81,7 @@ def module_register(name):
 
 DE_DICT = {'gnome-session': 'GNOME',
     'ksmserver': 'KDE',
-    'xfce4-session': 'Xfce 4.8',
+    'xfce4-session': 'Xfce 4.10',
     'lxsession': 'LXDE',
     '': 'None',
 }

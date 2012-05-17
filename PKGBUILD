@@ -1,7 +1,7 @@
 # Maintainer: Laurie Clark-Michalek <bluepeppers@archlinux.us>
 
 pkgname=archey3
-pkgver=20110904
+pkgver=20120517
 pkgrel=1
 pkgdesc="Python script to display system infomation alongside the Arch Linux logo"
 arch=('any')
