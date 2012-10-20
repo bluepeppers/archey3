@@ -106,6 +106,7 @@ WM_DICT = collections.OrderedDict([
         ('ratpoison', 'ratpoison'),
         ('scrotwm', 'ScrotWM'),
         ('subtle', 'subtle'),
+        ('monsterwm', 'MonsterWM'),
         ('wmaker', 'Window Maker'),
         ('wmfs', 'Wmfs'),
         ('wmii', 'wmii'),
