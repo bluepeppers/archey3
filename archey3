@@ -116,6 +116,7 @@ WM_DICT = collections.OrderedDict([
         ('compiz', 'Compiz'),
         (re.compile('xmonad-*'), 'xmonad'),
         ('qtile', 'QTile'),
+        ('wingo', 'Wingo'),
         ('', 'None'),
         ])
 
