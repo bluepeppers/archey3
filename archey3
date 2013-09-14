@@ -415,7 +415,7 @@ class packageDisplay(display):
     command_line = "pacman -Q"
 
     def format_output(self, instring):
-        return "Packages", len(instring.split('\n'))
+        return "Packages", len(instring.rstrip('\n').split('\n'))
 
 @module_register("distro")
 class distroCheck(display):
