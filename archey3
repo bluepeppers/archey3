@@ -266,17 +266,17 @@ class fsDisplay(display):
             #convert to straight float
             used_ = float(used[:-1]) * conversions[used[-1].upper()]
             total_ = float(total[:-1]) * conversions[total[-1].upper()]
-            persentage = used_ / total_ * 100
+            percentage = used_ / total_ * 100
         except Exception as e:
             self.state.logger.error(
                 "Could not colorize output, errored with {0}".format(e))
             return
         else:
-            used = self.color_me(used, persentage, low=low, medium=medium)
+            used = self.color_me(used, percentage, low=low, medium=medium)
 
-        if self.state.config.getboolean("fs", "persentage", fallback=True):
-            part = '{used} / {total} ({persentage}%) ({fstype})'.format(
-                used=used, total=total, persentage=int(persentage),
+        if self.state.config.getboolean("fs", "percentage", fallback=True):
+            part = '{used} / {total} ({percentage}%) ({fstype})'.format(
+                used=used, total=total, percentage=int(percentage),
                 fstype=fstype)
         else:
             part = '{used} / {total} ({fstype})'.format(
@@ -294,11 +294,11 @@ class ramDisplay(display):
         total = int(ram[1])
         title = 'RAM'
         try:
-            persentage = (used / total * 100)
+            percentage = (used / total * 100)
         except:
             used += ' MB'
         else:
-            used = self.color_me(number=persentage, output=str(used) + ' MB')
+            used = self.color_me(number=percentage, output=str(used) + ' MB')
         part = '{used} / {total} MB'.format(used=used, total=total)
         return title, part
 
