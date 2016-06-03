@@ -465,7 +465,8 @@ class distroCheck(display):
 class processCheck(display):
     command_line = "ps -u " + getuser()
 
-    render = lambda self: self
+    def render(self):
+        return self
 
     def run_command(self):
         super().run_command()
