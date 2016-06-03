@@ -190,7 +190,7 @@ class display(object):
                 self.process = Popen(cmd.split(), stdin=PIPE, stdout=PIPE,
                                      stderr=PIPE)
             except Exception as e:
-                self.state.logger.error("Could not run command {0}".format(cmd))
+                self.state.logger.error("Could not run command {}".format(cmd))
 
     def render(self):
         (stdoutdata, stderrdata) = self.process.communicate(self.stdindata or
@@ -255,16 +255,20 @@ class fsDisplay(display):
     def format_output(self, instring):
         try:
             decimal_point = self.call_command(
-                'locale -ck decimal_point').split('\n')[1].split('=')[1].strip('\"')
+                'locale -ck decimal_point').split('\n')[1] \
+                                           .split('=')[1] \
+                                           .strip('\"')
         except Exception as e:
-            self.state.logger.warning('Could not determine locale decimal point,' +
+            self.state.logger.warning(
+                   'Could not determine locale decimal point,' +
                    'defaulting to \'.\', failed with error {0}'.format(e))
             decimal_point = '.'
         values = [line for line in instring.split('\n') if line][1].split()
         used = values[3].replace(decimal_point, '.')
         total = values[2].replace(decimal_point, '.')
         fstype = values[1]
-        conversion_type = self.state.config.get('fs', 'unit', fallback='si').lower()
+        conversion_type = self.state.config.get('fs', 'unit',
+                                                fallback='si').lower()
         conversions = self.conversions[conversion_type]
 
         mount = '/root' if self.arg1 == '/' else self.arg1
@@ -327,8 +331,8 @@ class sensorDisplay(display):
         try:
             arg_from_arg = kwargs["args"][0]
         except IndexError:
-            self.state.logger.error(
-               "Did not get any arguments, require one, the sensor to display.")
+            self.state.logger.error("Did not get any arguments, require one, "
+                                    "the sensor to display.")
             raise
 
         if arg_from_arg:
@@ -538,7 +542,7 @@ class mpdDisplay(display):
                 "Could not parse mpc output, is mpc installed?")
             return
 
-        return ('{statname} in MPD database'.format(statname=self.stat.title()),
+        return ('{} in MPD database'.format(self.stat.title()),
                 stats[self.stat])
 
 
@@ -590,9 +594,9 @@ distro(), uname(n), uname(r), uptime(), wm(), de(), packages(), ram(),\
     def read(self, file_location=None):
         """
         Loads the config options stored in at file_location. If file_location
-        does not exist, it will attempt to load from the default config location
-        ($XDG_CONFIG_HOME/archey3.cfg). If that does not exist, it will write a
-        default config file to $XDG_CONFIG_HOME/archey3.cfg.
+        does not exist, it will attempt to load from the default config
+        location ($XDG_CONFIG_HOME/archey3.cfg). If that does not exist, it
+        will write a default config file to $XDG_CONFIG_HOME/archey3.cfg.
         """
 
         if file_location is None and "XDG_CONFIG_HOME" not in os.environ:
@@ -652,8 +656,9 @@ def screenshot(state):
     print('Say Cheese!')
     sys.stdout.flush()
 
-    screenshot_command = state.config.get('core', 'screenshot_command',
-                                          fallback="import -window root <datetime>.jpg")
+    screenshot_command = state.config.get(
+        'core', 'screenshot_command',
+        fallback="import -window root <datetime>.jpg")
     try:
         subprocess.check_call(
             screenshot_command.replace('<datetime>',
@@ -871,7 +876,8 @@ def main():
                       help="""choose a color: black, red, green, yellow, blue, magenta,\
                       cyan, white [Default: blue]""")
     parser.add_option('-s', '--screenshot',
-                      action='store_true', dest='screenshot', help='Take a screenshot')
+                      action='store_true', dest='screenshot',
+                      help='Take a screenshot')
     parser.add_option('--config',
                       action='store', dest='config', default=None,
                       help="Set the location of the config file to load.")
