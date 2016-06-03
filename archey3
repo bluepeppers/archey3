@@ -264,7 +264,7 @@ class fsDisplay(display):
         used = values[3].replace(decimal_point, '.')
         total = values[2].replace(decimal_point, '.')
         fstype = values[1]
-        conversion_type = self.state.config.get('fs', 'unit', fallback="si").lower()
+        conversion_type = self.state.config.get('fs', 'unit', fallback='si').lower()
         conversions = self.conversions[conversion_type]
 
         mount = '/root' if self.arg1 == '/' else self.arg1
@@ -364,8 +364,8 @@ class envDisplay(display):
         try:
             self.arg1 = kwargs["args"][0]
         except IndexError:
-            self.state.logger.error("Did not get any arguments, require one," +
-                                    " the env variable to display.")
+            self.state.logger.error("Did not get any arguments, require one, "
+                                    "the env variable to display.")
             raise
 
         super().__init__(**kwargs)
@@ -385,8 +385,8 @@ class unameDisplay(display):
         try:
             flag = kwargs["args"][0]
         except IndexError:
-            self.state.logger.error("Did not get any arguments, require one," +
-                                    " the flag to pass to uname")
+            self.state.logger.error("Did not get any arguments, require one, "
+                                    "the flag to pass to uname")
             raise
 
         arg_from_conf = self.state.config.get('uname', 'argument', fallback="")
@@ -520,8 +520,8 @@ class mpdDisplay(display):
         try:
             self.stat = kwargs["args"][0]
         except IndexError:
-            self.state.logger.error("Did not get any arguments, require one," +
-                                    " the stat to display.")
+            self.state.logger.error("Did not get any arguments, require one, "
+                                    "the stat to display.")
         self.arg1 = self.state.config.get('mpd', 'host', fallback='localhost')
         self.arg2 = self.state.config.getint('mpd', 'port', fallback=6600)
 
