@@ -751,8 +751,7 @@ class Archey(object):
         distro_out = render_class(self.state, distroCheck, ())
 
         if not distro_out:
-            self.state.logger.critical(
-                "Unrecognised distribution.")
+            self.state.logger.critical("Unrecognised distribution.")
             raise RuntimeException("Unrecognised distribution.")
 
         self.distro_name = ' '.join(distro_out[1].split()[:-1])
