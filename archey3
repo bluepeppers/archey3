@@ -649,7 +649,7 @@ def screenshot(state):
     print('Screenshotting in')
     screenshot_time = state.config.getint("core", "screenshotwait", fallback=5)
     for x in sorted(range(1, screenshot_time + 1), reverse=True):
-        print('%s' % x, end='')
+        print(x, end='')
         sys.stdout.flush()
         sleep(1.0/3)
         for x in range(3):
