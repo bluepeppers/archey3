@@ -10,8 +10,6 @@
 # Simple python script to display an Archlinux logo in ASCII art
 # Along with basic system information.
 
-__version__ = "0.5"
-
 # Import libraries
 import collections
 import subprocess, optparse, re, sys, configparser
@@ -24,6 +22,10 @@ from datetime import datetime
 import re
 import os.path
 import multiprocessing
+
+
+__version__ = "0.5"
+
 
 try:
     from logbook import Logger, lookup_level
