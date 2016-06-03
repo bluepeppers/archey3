@@ -206,7 +206,7 @@ class display(object):
             return output
 
         if number <= low:
-            color_= low_color
+            color_ = low_color
         elif low < number <= medium:
             color_ = medium_color
         elif medium < number:
@@ -274,7 +274,7 @@ class fsDisplay(display):
         medium = self.state.config.getint('fs', 'medium_bound', fallback=70)
 
         try:
-            #convert to straight float
+            # convert to straight float
             used_ = float(used[:-1]) * conversions[used[-1].upper()]
             total_ = float(total[:-1]) * conversions[total[-1].upper()]
             percentage = used_ / total_ * 100
@@ -531,7 +531,7 @@ class mpdDisplay(display):
             stats['artists'] = lines[0].split(':')[1].strip()
             stats['albums'] = lines[1].split(':')[1].strip()
             stats['songs'] = lines[2].split(':')[1].strip()
-        #if people don't have mpc installed then return None)
+        # if people don't have mpc installed then return None)
         except:
             self.state.logger.error(
                 "Could not parse mpc output, is mpc installed?")
@@ -570,7 +570,7 @@ class systemUpgrade(display):
         return "Last Upgrade", datestr
 
 
-#------------ Config    -----------
+# ------------ Config -----------
 
 class ArcheyConfigParser(configparser.SafeConfigParser):
     """
@@ -609,7 +609,7 @@ distro(), uname(n), uname(r), uptime(), wm(), de(), packages(), ram(),\
             self.write_config(config_location)
             return [config_location]
         if not loaded:
-            #Try with default
+            # Try with default
             loaded = super(ArcheyConfigParser, self).read()
         return loaded
 
@@ -622,7 +622,7 @@ distro(), uname(n), uname(r), uptime(), wm(), de(), packages(), ram(),\
                 self.add_section(section)
 
             for option, value in values.items():
-                #strip any excess spaces
+                # strip any excess spaces
                 value = re.sub("( +)", " ", value)
                 self.set(section, option, value)
 
@@ -634,7 +634,7 @@ distro(), uname(n), uname(r), uptime(), wm(), de(), packages(), ram(),\
             self.write(configfile)
 
 
-#------------ Functions -----------
+# ------------ Functions -----------
 
 def screenshot(state):
     print('Screenshotting in')
@@ -719,7 +719,7 @@ def render_class(state, cls, args):
                 cls.__name__, e))
 
 
-#------------ Display object ---------
+# ------------ Display object ---------
 
 class Archey(object):
     DISPLAY_PARSING_REGEX = "(?P<func>\w+)\((|(?P<args>[\w, /]+))\)"
@@ -835,7 +835,7 @@ class Archey(object):
         title = item[0].rstrip(':')
         data = str(item[1]).rstrip()
 
-        #if we're dealing with a fraction
+        # if we're dealing with a fraction
         if len(data.split('/')) == 2:
             numerator = data.split('/')[0]
             numerator = (color(self.state, 1, bold=True) + numerator +
