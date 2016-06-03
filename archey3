@@ -611,7 +611,7 @@ distro(), uname(n), uname(r), uptime(), wm(), de(), packages(), ram(),\
 
         loaded = super(ArcheyConfigParser, self).read(config_location)
 
-        if file_location == None and not loaded:
+        if file_location is None and not loaded:
             self.load_default_config()
             self.write_config(config_location)
             return [config_location]
