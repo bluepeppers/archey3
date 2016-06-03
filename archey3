@@ -434,7 +434,8 @@ class uptimeDisplay(display):
                 daystring='{days} day{s}, '.format(days=day,
                                                    s=('s' if day > 1 else ''))
                           if day else '',
-                hours = hour, mins = minute
+                hours=hour,
+                mins=minute
             )
             return "Uptime", uptime
 
@@ -559,7 +560,7 @@ class systemUpgrade(display):
                     datestart = line.find('[')
                     dateend = line.find(']')
                     if datestart != -1 and dateend != -1:
-                        datestr = line[datestart + 1 : dateend]
+                        datestr = line[datestart + 1: dateend]
                     break
         except Exception as err:
             print(err)
@@ -771,8 +772,7 @@ class Archey(object):
 
         return LOGOS[self.distro_name].format(c1=color(self.state, 1),
                                               c2=color(self.state, 2),
-                                              results = results
-                                              )
+                                              results=results)
 
     def prepare_results(self):
         """
