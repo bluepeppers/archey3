@@ -593,10 +593,12 @@ distro(), uname(n), uname(r), uptime(), wm(), de(), packages(), ram(),\
 
     def read(self, file_location=None):
         """
-        Loads the config options stored in at file_location. If file_location
-        does not exist, it will attempt to load from the default config
-        location ($XDG_CONFIG_HOME/archey3.cfg). If that does not exist, it
-        will write a default config file to $XDG_CONFIG_HOME/archey3.cfg.
+        Loads the config options stored in at file_location.
+
+        If file_location does not exist, it will attempt to load from the
+        default config location ($XDG_CONFIG_HOME/archey3.cfg). If that does
+        not exist, it will write a default config file to
+        $XDG_CONFIG_HOME/archey3.cfg.
         """
 
         if file_location is None and "XDG_CONFIG_HOME" not in os.environ:
