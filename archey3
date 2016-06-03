@@ -193,8 +193,8 @@ class display(object):
                 self.state.logger.error("Could not run command {}".format(cmd))
 
     def render(self):
-        (stdoutdata, stderrdata) = self.process.communicate(self.stdindata or
-                                                            None)
+        stdoutdata, stderrdata = self.process.communicate(self.stdindata or
+                                                          None)
 
         return self.format_output(stdoutdata.decode())
 
@@ -895,7 +895,7 @@ def main():
                       help="The level of errors you wish to display. "
                            "Choices are NOTSET, DEBUG, INFO, WARNING, ERROR, "
                            "and CRITICAL. CRITICAL is the default.")
-    (options, args) = parser.parse_args()
+    options, args = parser.parse_args()
 
     config = ArcheyConfigParser()
     config.read(options.config)
