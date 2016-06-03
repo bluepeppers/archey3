@@ -188,13 +188,13 @@ class display(object):
 
             try:
                 self.process = Popen(cmd.split(), stdin=PIPE, stdout=PIPE,
-                                      stderr=PIPE)
+                                     stderr=PIPE)
             except Exception as e:
                 self.state.logger.error("Could not run command {0}".format(cmd))
 
     def render(self):
-        (stdoutdata, stderrdata) = self.process.communicate(self.stdindata
-                                                             or None)
+        (stdoutdata, stderrdata) = self.process.communicate(self.stdindata or
+                                                            None)
 
         return self.format_output(stdoutdata.decode())
 
@@ -323,7 +323,7 @@ class sensorDisplay(display):
         super().__init__(**kwargs)
 
         arg_from_conf = self.state.config.get('sensor', 'sensor',
-                                        fallback='coretemp-*')
+                                              fallback='coretemp-*')
         try:
             arg_from_arg = kwargs["args"][0]
         except IndexError:
@@ -365,7 +365,7 @@ class envDisplay(display):
             self.arg1 = kwargs["args"][0]
         except IndexError:
             self.state.logger.error("Did not get any arguments, require one," +
-                              " the env variable to display.")
+                                    " the env variable to display.")
             raise
 
         super().__init__(**kwargs)
@@ -386,7 +386,7 @@ class unameDisplay(display):
             flag = kwargs["args"][0]
         except IndexError:
             self.state.logger.error("Did not get any arguments, require one," +
-                              " the flag to pass to uname")
+                                    " the flag to pass to uname")
             raise
 
         arg_from_conf = self.state.config.get('uname', 'argument', fallback="")
@@ -427,8 +427,9 @@ class uptimeDisplay(display):
             fuptime = fuptime % 3600
             minute = int(fuptime / 60)
             uptime = '{daystring}{hours}:{mins:02d}'.format(
-                daystring='{days} day{s}, '.format(days=day, s=('s' if day > 1
-                                                     else '')) if day else '',
+                daystring='{days} day{s}, '.format(days=day,
+                                                   s=('s' if day > 1 else ''))
+                          if day else '',
                 hours = hour, mins = minute
             )
             return "Uptime", uptime
@@ -520,7 +521,7 @@ class mpdDisplay(display):
             self.stat = kwargs["args"][0]
         except IndexError:
             self.state.logger.error("Did not get any arguments, require one," +
-                              " the stat to display.")
+                                    " the stat to display.")
         self.arg1 = self.state.config.get('mpd', 'host', fallback='localhost')
         self.arg2 = self.state.config.getint('mpd', 'port', fallback=6600)
 
@@ -538,7 +539,7 @@ class mpdDisplay(display):
             return
 
         return ('{statname} in MPD database'.format(statname=self.stat.title()),
-               stats[self.stat])
+                stats[self.stat])
 
 
 @module_register("system_upgrade")
@@ -652,7 +653,7 @@ def screenshot(state):
     sys.stdout.flush()
 
     screenshot_command = state.config.get('core', 'screenshot_command',
-                                  fallback="import -window root <datetime>.jpg")
+                                          fallback="import -window root <datetime>.jpg")
     try:
         subprocess.check_call(
             screenshot_command.replace('<datetime>',
@@ -858,33 +859,34 @@ def main():
  screenshots""",
         version="%prog {version}".format(version=__version__))
     parser.add_option('-c', '--color',
-            action='store', type='choice', dest='color',
-            choices=('black',
-                     'red',
-                     'green',
-                     'yellow',
-                     'blue',
-                     'magenta',
-                     'cyan',
-                     'white'),
-            help="""choose a color: black, red, green, yellow, blue, magenta,\
-            cyan, white [Default: blue]""")
+                      action='store', type='choice', dest='color',
+                      choices=('black',
+                               'red',
+                               'green',
+                               'yellow',
+                               'blue',
+                               'magenta',
+                               'cyan',
+                               'white'),
+                      help="""choose a color: black, red, green, yellow, blue, magenta,\
+                      cyan, white [Default: blue]""")
     parser.add_option('-s', '--screenshot',
-            action='store_true', dest='screenshot', help='Take a screenshot')
+                      action='store_true', dest='screenshot', help='Take a screenshot')
     parser.add_option('--config',
-            action='store', dest='config', default=None,
-            help="Set the location of the config file to load.")
+                      action='store', dest='config', default=None,
+                      help="Set the location of the config file to load.")
     parser.add_option('--debug',
-            action='store', type='choice', dest='log_level',
-            choices=('NOTSET',
-                     'DEBUG',
-                     'INFO',
-                     'WARNING',
-                     'ERROR',
-                     'CRITICAL'),
-            default='CRITICAL',
-            help="The level of errors you wish to display. Choices are\
- NOTSET, DEBUG, INFO, WARNING, ERROR, and CRITICAL. CRITICAL is the default.")
+                      action='store', type='choice', dest='log_level',
+                      choices=('NOTSET',
+                               'DEBUG',
+                               'INFO',
+                               'WARNING',
+                               'ERROR',
+                               'CRITICAL'),
+                      default='CRITICAL',
+                      help="The level of errors you wish to display. "
+                           "Choices are NOTSET, DEBUG, INFO, WARNING, ERROR, "
+                           "and CRITICAL. CRITICAL is the default.")
     (options, args) = parser.parse_args()
 
     config = ArcheyConfigParser()
