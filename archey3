@@ -42,6 +42,7 @@ except ImportError:
     def lookup_level(_):
         return 0
 
+
 UNAME_FLAG_MEANINGS = {
     'a': 'System Infomation',
     's': 'Kernel Name',
@@ -77,6 +78,7 @@ LOGOS = {'Arch Linux': '''{c1}
 
 CLASS_MAPPINGS = {}
 
+
 def module_register(name):
     """
     Registers the class in the CLASS_MAPPING global.
@@ -85,6 +87,7 @@ def module_register(name):
         CLASS_MAPPINGS[name] = cls
         return cls
     return decorator
+
 
 DE_DICT = collections.OrderedDict([
         ('cinnamon', 'Cinnamon'),
@@ -141,13 +144,16 @@ COLORS = {
     'white': '7'
 }
 
+
 class ArgumentError(Exception):
     def __init__(self, caller, message):
         msg = "{0}: {1}".format(caller.__class__.__name__, message)
         super().__init__(msg)
 
+
 # State must be serializable
 State = collections.namedtuple("State", "color config logger")
+
 
 class display(object):
     command_line = ''
@@ -210,6 +216,7 @@ class display(object):
                                   color(self.state, 'clear'))
 
     regex_class = re.compile("").__class__
+
     def process_exists(self, key):
         global PROCESSES
         if isinstance(key, self.regex_class):
@@ -287,6 +294,7 @@ class fsDisplay(display):
                 used=used, total=total, fstype=fstype)
         return title, part
 
+
 @module_register("ram")
 class ramDisplay(display):
     command_line = "free -m"
@@ -305,6 +313,7 @@ class ramDisplay(display):
             used = self.color_me(number=percentage, output=str(used) + ' MB')
         part = '{used} / {total} MB'.format(used=used, total=total)
         return title, part
+
 
 @module_register("sensor")
 class sensorDisplay(display):
@@ -348,6 +357,7 @@ class sensorDisplay(display):
             out.append((info[0], temp))
         return out
 
+
 @module_register("env")
 class envDisplay(display):
     def __init__(self, **kwargs):
@@ -363,6 +373,7 @@ class envDisplay(display):
     def render(self):
         argvalue = getenv(self.arg1.upper())
         return ('$' + self.arg1.upper(), argvalue)
+
 
 @module_register("uname")
 class unameDisplay(display):
@@ -390,6 +401,7 @@ class unameDisplay(display):
     def format_output(self, instring):
         return (UNAME_FLAG_MEANINGS[self.arg1[1]], instring)
 
+
 @module_register("cpu")
 class cpuDisplay(display):
     command_line = "cat /proc/cpuinfo"
@@ -400,6 +412,7 @@ class cpuDisplay(display):
         for k, v in kv:
             infodict[k.strip()] = v.strip()
         return "Processor Type", infodict["model name"]
+
 
 @module_register("uptime")
 class uptimeDisplay(display):
@@ -420,12 +433,14 @@ class uptimeDisplay(display):
             )
             return "Uptime", uptime
 
+
 @module_register("packages")
 class packageDisplay(display):
     command_line = "pacman -Q"
 
     def format_output(self, instring):
         return "Packages", len(instring.rstrip('\n').split('\n'))
+
 
 @module_register("distro")
 class distroCheck(display):
@@ -438,6 +453,7 @@ class distroCheck(display):
             distro = "Arch Linux"
         distro = '{0} {1}'.format(distro, self.call_command("uname -m"))
         return "OS", distro
+
 
 @module_register("process")
 class processCheck(display):
@@ -462,6 +478,7 @@ class processCheck(display):
             return True
         return False
 
+
 @module_register("wm")
 class wmDisplay(display):
     def render(self):
@@ -474,6 +491,7 @@ class wmDisplay(display):
                 break
         return "WM", WM_DICT[wm]
 
+
 @module_register("de")
 class deDisplay(display):
     def render(self):
@@ -485,6 +503,7 @@ class deDisplay(display):
                 de = key
                 break
         return "DE", DE_DICT[de]
+
 
 @module_register("mpd")
 class mpdDisplay(display):
@@ -521,6 +540,7 @@ class mpdDisplay(display):
         return ('{statname} in MPD database'.format(statname=self.stat.title()),
                stats[self.stat])
 
+
 @module_register("system_upgrade")
 class systemUpgrade(display):
 
@@ -548,6 +568,7 @@ class systemUpgrade(display):
             datestr = '{0} ({1} days ago)'.format(datestr, numdays)
 
         return "Last Upgrade", datestr
+
 
 #------------ Config    -----------
 
@@ -643,6 +664,7 @@ def screenshot(state):
     except subprocess.FileNotFoundError:
         print("Could not find import command, install imagemagick")
 
+
 def color(state, code, bold=False):
     """
     Returns a character color sequence acording to the code given, and the
@@ -660,6 +682,7 @@ def color(state, code, bold=False):
 
     return first_bitty_bit + second_bitty_bit
 
+
 def _mp_render_helper(container):
     """
     A little helper to get round the one iterator argument with
@@ -670,6 +693,7 @@ def _mp_render_helper(container):
     args = container["args"]
     cls = CLASS_MAPPINGS[cls_name]
     return render_class(state, cls, args)
+
 
 def render_class(state, cls, args):
     """
@@ -693,6 +717,7 @@ def render_class(state, cls, args):
         state.logger.error(
             "Could not render line for {0}, failed with error {1}".format(
                 cls.__name__, e))
+
 
 #------------ Display object ---------
 
@@ -763,7 +788,6 @@ class Archey(object):
         outputs = list(map(self.format_item,
                            filter(bool, raw_out)))
 
-
         return outputs + [""] * (18 - len(outputs))
 
     def arrange_results(self, results):
@@ -826,6 +850,7 @@ class Archey(object):
                 clear=color(self.state, "clear")
         )
 
+
 def main():
     parser = OptionParser(
         usage='%prog',
@@ -867,6 +892,7 @@ def main():
 
     archey = Archey(config=config, options=options)
     archey.run(options.screenshot)
+
 
 if __name__ == "__main__":
     main()
