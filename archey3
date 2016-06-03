@@ -12,7 +12,9 @@
 
 # Import libraries
 import collections
-import subprocess, optparse, re, sys, configparser
+import subprocess
+import sys
+import configparser
 from subprocess import Popen, PIPE
 from optparse import OptionParser
 from getpass import getuser
