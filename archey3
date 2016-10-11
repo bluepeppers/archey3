@@ -851,7 +851,7 @@ class Archey(object):
         data = str(item[1]).rstrip()
 
         #if we're dealing with a fraction
-        if len(data.split('/')) == 2:
+        if re.fullmatch("[^/]*[0-9][^/]*/[^/]*[0-9][^/]*", data):
             numerator = data.split('/')[0]
             numerator = (color(self.state, 1, bold=True) + numerator +
                          color(self.state, 'clear'))
