@@ -69,6 +69,27 @@ LOGOS = {'Arch Linux': '''{c1}
 {c2}  ;####                 ####;   {results[15]}
 {c2}  ##'                     '##   {results[16]}
 {c2} #'                         `#  {results[17]}
+\x1b[0m''',
+'Parabola GNU/Linux-libre': '''{c1}
+{c1}                                       {results[0]}
+{c1}                          _,,     _    {results[1]}
+{c1}                   _,   ,##'    ,##;   {results[2]}
+{c1}             _, ,##'  ,##'    ,#####;  {results[3]}
+{c1}         _,;#',##'  ,##'    ,#######'  {results[4]}
+{c1}     _,#**^'         `    ,#########   {results[5]}
+{c1} .-^`                    `#########    {results[6]}
+{c1}                          ########     {results[7]}
+{c1}                          ;######      {results[8]}
+{c1}                          ;####*       {results[9]}
+{c1}                          ####'        {results[10]}
+{c1}                         ;###          {results[11]}
+{c2}                        ,##'           {results[12]}
+{c2}                        ##             {results[13]}
+{c2}                       #'              {results[14]}
+{c2}                      /                {results[15]}
+{c2}                     '                 {results[16]}
+{c2}                                       {results[17]}
+\x1b[0m''',
 '': '''{c1}
 {c1}     ??????????        {results[0]}
 {c1}   ???????????????     {results[1]}
