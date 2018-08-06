@@ -548,7 +548,7 @@ class systemUpgrade(display):
 
 #------------ Config    -----------
 
-class ArcheyConfigParser(configparser.SafeConfigParser):
+class ArcheyConfigParser(configparser.ConfigParser):
     """
     A parser for the archey config file.
     """
