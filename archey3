@@ -802,7 +802,7 @@ class Archey(object):
                 args = ()
 
             yield groups["func"], args
-        raise StopIteration
+        return
 
     def format_item(self, item):
         title = item[0].rstrip(':')
