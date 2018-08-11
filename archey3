@@ -548,7 +548,7 @@ class systemUpgrade(display):
 
 #------------ Config    -----------
 
-class ArcheyConfigParser(configparser.SafeConfigParser):
+class ArcheyConfigParser(configparser.ConfigParser):
     """
     A parser for the archey config file.
     """
@@ -802,7 +802,6 @@ class Archey(object):
                 args = ()
 
             yield groups["func"], args
-        raise StopIteration
 
     def format_item(self, item):
         title = item[0].rstrip(':')
