@@ -90,6 +90,7 @@ DE_DICT = collections.OrderedDict([
         ('mate-session', 'MATE'),
         ('xfce4-session', 'Xfce'),
         ('lxsession', 'LXDE'),
+        ('fur-box-session', 'Fur Box'),
         ('', 'None'),
         ])
 
