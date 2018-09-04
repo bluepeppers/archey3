@@ -82,6 +82,11 @@ def module_register(name):
         return cls
     return decorator
 
+def mutter_check():
+    """Some heuristics for detecting Mutter as WM."""
+    return os.environ.get('XDG_SESSION_TYPE') == 'wayland' and\
+        os.environ.get('XDG_SESSION_DESKTOP') == 'gnome'
+
 DE_DICT = collections.OrderedDict([
         ('cinnamon', 'Cinnamon'),
         ('gnome-session', 'GNOME'),
@@ -109,6 +114,7 @@ WM_DICT = collections.OrderedDict([
         (re.compile('kwin(_x11|_wayland)?'), 'KWin'),
         ('metacity', 'Metacity'),
         ('musca', 'Musca'),
+        (mutter_check, 'Mutter'),
         ('openbox', 'Openbox'),
         ('pekwm', 'PekWM'),
         ('ratpoison', 'ratpoison'),
@@ -464,12 +470,17 @@ class wmDisplay(display):
     def render(self):
         if self.state.config.get('wm', 'manual', fallback=False):
             return "WM", self.state.config.get('wm', 'manual')
-        wm = ''
-        for key in WM_DICT.keys():
+
+        for key, val in WM_DICT.items():
             if self.process_exists(key):
-                wm = key
-                break
-        return "WM", WM_DICT[wm]
+                return "WM", val
+
+            # 2to3 callable()
+            if isinstance(key, collections.Callable):
+                if key():
+                    return "WM", val
+
+        return "WM", WM_DICT['']
 
 @module_register("de")
 class deDisplay(display):
