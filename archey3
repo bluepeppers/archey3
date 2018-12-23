@@ -546,6 +546,20 @@ class systemUpgrade(display):
 
         return "Last Upgrade", datestr
 
+@module_register("colors")
+class colorsDisplay(display):
+    """
+    Displays the default shell colors as boxes
+    """
+    def render(self):
+        colors = COLORS.values()
+        nrml = "\033[00;3{0}m\u2588\u2588"
+        bold = "\033[01;3{0}m\u2588\u2588"
+        box = (nrml + bold)
+        clear = "\033[0m"
+        s = ' '.join([box.format(str(c)) for c in colors])
+        return "Colors", s + clear
+
 #------------ Config    -----------
 
 class ArcheyConfigParser(configparser.ConfigParser):
@@ -558,7 +572,7 @@ class ArcheyConfigParser(configparser.ConfigParser):
                          'display_modules':
                          """\
 distro(), uname(n), uname(r), uptime(), wm(), de(), packages(), ram(),\
- cpu(), env(editor), fs(/), mpd(albums)"""
+ cpu(), env(editor), fs(/), mpd(albums), colors()"""
                          },
                 }
 
