@@ -24,6 +24,7 @@ from datetime import datetime
 import re
 import os.path
 import multiprocessing
+import shlex
 
 try:
     from logbook import Logger, lookup_level
@@ -68,10 +69,69 @@ LOGOS = {'Arch Linux': '''{c1}
 {c2}  ;####                 ####;   {results[15]}
 {c2}  ##'                     '##   {results[16]}
 {c2} #'                         `#  {results[17]}
+\x1b[0m''',
+'Parabola GNU/Linux-libre': '''{c1}
+{c1}                                       {results[0]}
+{c1}                          _,,     _    {results[1]}
+{c1}                   _,   ,##'    ,##;   {results[2]}
+{c1}             _, ,##'  ,##'    ,#####;  {results[3]}
+{c1}         _,;#',##'  ,##'    ,#######'  {results[4]}
+{c1}     _,#**^'         `    ,#########   {results[5]}
+{c1} .-^`                    `#########    {results[6]}
+{c1}                          ########     {results[7]}
+{c1}                          ;######      {results[8]}
+{c1}                          ;####*       {results[9]}
+{c1}                          ####'        {results[10]}
+{c1}                         ;###          {results[11]}
+{c2}                        ,##'           {results[12]}
+{c2}                        ##             {results[13]}
+{c2}                       #'              {results[14]}
+{c2}                      /                {results[15]}
+{c2}                     '                 {results[16]}
+{c2}                                       {results[17]}
+\x1b[0m''',
+'': '''{c1}
+{c1}     ??????????        {results[0]}
+{c1}   ???????????????     {results[1]}
+{c1} ?????       ???????   {results[2]}
+{c1} ??            ?????   {results[3]}
+{c1}                ?????  {results[4]}
+{c1}               ?????   {results[5]}
+{c1}             ??????    {results[6]}
+{c1}           ??????      {results[7]}
+{c1}         ??????        {results[8]}
+{c1}        ?????          {results[9]}
+{c1}       ?????           {results[10]}
+{c1}       ?????           {results[11]}
+{c1}       ?????           {results[12]}
+{c1}                       {results[13]}
+{c1}                       {results[14]}
+{c1}       ?????           {results[15]}
+{c1}       ?????           {results[16]}
+{c1}       ?????           {results[17]}
 \x1b[0m'''
 }
 
 CLASS_MAPPINGS = {}
+
+def os_release():
+    try:
+        with open("/etc/os-release") as file:
+            osrelease = file.read()
+    except IOError:
+        try:
+            with open("/usr/lib/os-release") as file:
+                osrelease = file.read()
+        except IOError:
+            osrelease = ''
+    props = {}
+    tokens = shlex.split(osrelease, posix=True)
+    for token in tokens:
+        if '=' in token:
+            k, v = token.split('=', 1)
+            props[k] = v
+    return props
+OS_RELEASE = os_release()
 
 def module_register(name):
     """
@@ -427,12 +487,9 @@ class packageDisplay(display):
 @module_register("distro")
 class distroCheck(display):
     def render(self):
-        try:
-            _ = open("/etc/pacman.conf")
-        except IOError:
-            distro = self.call_command("uname -o")
-        else:
-            distro = "Arch Linux"
+        distro = OS_RELEASE.get('PRETTY_NAME',
+                 OS_RELEASE.get('NAME',
+                 self.call_command("uname -o").strip()))
         distro = '{0} {1}'.format(distro, self.call_command("uname -m"))
         return "OS", distro
 
@@ -712,14 +769,20 @@ class Archey(object):
         global PROCESSES
         PROCESSES = render_class(self.state, processCheck, ())
 
-        distro_out = render_class(self.state, distroCheck, ())
+    def logo(self):
+        distro_names = []
+        if 'PRETTY_NAME' in OS_RELEASE:
+            distro_names.append(OS_RELEASE['PRETTY_NAME'])
+        if 'NAME' in OS_RELEASE:
+            distro_names.append(OS_RELEASE['NAME'])
+        if 'ID' in OS_RELEASE:
+            distro_names.append(OS_RELEASE['ID'])
+        distro_names.append(display.call_command('uname -o').strip())
+        distro_names.append('')
 
-        if not distro_out:
-            self.state.logger.critical(
-                "Unrecognised distribution.")
-            raise RuntimeException("Unrecognised distribution.")
-
-        self.distro_name = ' '.join(distro_out[1].split()[:-1])
+        for distro_name in distro_names:
+            if distro_name in LOGOS:
+                return LOGOS[distro_name]
 
     def run(self, screenshot_=False):
         """
@@ -734,10 +797,10 @@ class Archey(object):
         results = self.prepare_results()
         results = self.arrange_results(results)
 
-        return LOGOS[self.distro_name].format(c1=color(self.state, 1),
-                                              c2=color(self.state, 2),
-                                              results = results
-                                              )
+        return self.logo().format(c1=color(self.state, 1),
+                           c2=color(self.state, 2),
+                           results = results
+                           )
 
     def prepare_results(self):
         """
@@ -808,7 +871,7 @@ class Archey(object):
         data = str(item[1]).rstrip()
 
         #if we're dealing with a fraction
-        if len(data.split('/')) == 2:
+        if re.fullmatch("[^/]*[0-9][^/]*/[^/]*[0-9][^/]*", data):
             numerator = data.split('/')[0]
             numerator = (color(self.state, 1, bold=True) + numerator +
                          color(self.state, 'clear'))
