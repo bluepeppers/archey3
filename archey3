@@ -24,6 +24,7 @@ from datetime import datetime
 import re
 import os.path
 import multiprocessing
+import math
 
 try:
     from logbook import Logger, lookup_level
@@ -286,22 +287,44 @@ class fsDisplay(display):
 
 @module_register("ram")
 class ramDisplay(display):
-    command_line = "free -m"
+    command_line = "cat /proc/meminfo"
 
     def format_output(self, instring):
-        ram = ''.join(line for line in str(instring).split('\n') if\
-                      line.startswith('Mem:')).split()
-        used = int(ram[2])
-        total = int(ram[1])
-        title = 'RAM'
+        instring_lines = str(instring).split('\n')
+
+        for line in instring_lines:
+            if line.startswith('MemTotal:'):
+                mem_total = int(line.split()[1])
+            if line.startswith('SwapTotal:'):
+                swap_total = int(line.split()[1])
+            if line.startswith('MemFree:'):
+                mem_free = int(line.split()[1])
+            if line.startswith('SwapFree:'):
+                swap_free = int(line.split()[1])
+            if line.startswith('Buffers:'):
+                buffers = int(line.split()[1])
+            if line.startswith('Cached:'):
+                cached = int(line.split()[1])
+            if line.startswith('SReclaimable:'):
+                s_reclaimable = int(line.split()[1])
+
+        ram_total = mem_total + swap_total
+        ram_free = mem_free + swap_free
+        ram_cached = cached + s_reclaimable
+        ram_used = ram_total - ram_free - buffers - ram_cached
+
+        ram_total = math.floor(ram_total / 1024)
+        ram_used  = math.floor(ram_used / 1024)
+
         try:
-            persentage = (used / total * 100)
+            percentage = (ram_used / ram_total * 100)
         except:
             used += ' MB'
         else:
-            used = self.color_me(number=persentage, output=str(used) + ' MB')
-        part = '{used} / {total} MB'.format(used=used, total=total)
-        return title, part
+            used = self.color_me(number=percentage, output=str(ram_used) + ' MB')
+
+        part = '{used} / {total} MB'.format(used=ram_used, total=ram_total)
+        return 'RAM', part
 
 @module_register("sensor")
 class sensorDisplay(display):
