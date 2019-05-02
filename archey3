@@ -90,6 +90,7 @@ DE_DICT = collections.OrderedDict([
         ('mate-session', 'MATE'),
         ('xfce4-session', 'Xfce'),
         ('lxsession', 'LXDE'),
+        ('deepin-menu', 'Deepin'),
         ('', 'None'),
         ])
 
@@ -124,6 +125,7 @@ WM_DICT = collections.OrderedDict([
         (re.compile('xmonad-*'), 'xmonad'),
         ('qtile', 'QTile'),
         ('wingo', 'Wingo'),
+        ('deepin-wm', 'deepin-wm'),
         ('', 'None'),
         ])
 
