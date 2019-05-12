@@ -402,7 +402,7 @@ class cpuDisplay(display):
         infodict = {}
         for k, v in kv:
             infodict[k.strip()] = v.strip()
-        return "Processor Type", infodict["model name"]
+        return "CPU", infodict["model name"]
 
 @module_register("gpu")
 class gpuDisplay(display):
@@ -415,6 +415,8 @@ class gpuDisplay(display):
                 if "controller:" in instring:
                     gpu_str = ''.join(line.split("controller:")[1:]).strip()
                 break
+        if len(gpu_str) >= 40:
+            gpu_str = gpu_str[:37] + "..."
         return "GPU", gpu_str
 
 @module_register("uptime")
