@@ -396,7 +396,7 @@ class cpuDisplay(display):
         infodict = {}
         for k, v in kv:
             infodict[k.strip()] = v.strip()
-        return "Processor Type", infodict["model name"]
+        return "Processor Type", '{pt} [{count}]'.format(pt=infodict["model name"], count=len(instring.split("BogoMIPS")) - 1)
 
 @module_register("uptime")
 class uptimeDisplay(display):
