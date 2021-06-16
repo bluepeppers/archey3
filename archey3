@@ -499,7 +499,9 @@ class mpdDisplay(display):
         except IndexError:
             self.state.logger.error("Did not get any arguments, require one," +
                               " the stat to display.")
-        self.arg1 = self.state.config.get('mpd', 'host', fallback='localhost')
+        self.arg1 = os.path.expanduser(self.state.config.get('mpd', 'socket', fallback=''))
+        if not os.path.exists(self.arg1):
+            self.arg1 = self.state.config.get('mpd', 'host', fallback='localhost')
         self.arg2 = self.state.config.getint('mpd', 'port', fallback=6600)
 
     def format_output(self, instring):
